@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import uz.cas.controllersestem.payload.ReqUser;
 import uz.cas.controllersestem.service.UsersService;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/uz/cas/user")
 public class UsersController {
@@ -15,12 +17,11 @@ public class UsersController {
     private UsersService usersService;
 
     @PostMapping
-    public HttpEntity<?> addUser(@RequestBody ReqUser reqUser){
-        System.out.println(reqUser.getUsername());
+    public HttpEntity<?> addUser(@Valid  @RequestBody ReqUser reqUser){
         return ResponseEntity.ok(usersService.addUser(reqUser));
     }
     @PostMapping("/{id}")
-    public HttpEntity<?> editUser(@PathVariable Integer id, @RequestBody ReqUser reqUser){
+    public HttpEntity<?> editUser(@PathVariable Integer id, @Valid @RequestBody ReqUser reqUser){
         return ResponseEntity.ok(usersService.editUser(id, reqUser));
     }
     @DeleteMapping("/{id}")

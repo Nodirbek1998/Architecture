@@ -1,13 +1,21 @@
 package uz.cas.controllersestem.payload;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.List;
 
 public class ReqProject {
+    @NotBlank(message = "malumot kiritilmagan")
     private String projectName;
+    @NotEmpty(message = "malumot kiritilmagan")
     private List<Integer> usersList;
+    @NotNull(message = "malumot kiritilmagan")
     private Integer projectManager;
+    @NotNull(message = "malumot kiritilmagan")
     private Date projectCreated;
+    @NotNull(message = "malumot kiritilmagan")
     private Date projectFinished;
 
     public ReqProject() {

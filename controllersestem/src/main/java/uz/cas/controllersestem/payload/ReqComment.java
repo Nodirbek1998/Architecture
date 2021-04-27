@@ -1,11 +1,14 @@
 package uz.cas.controllersestem.payload;
 
-public class ReqComment {
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+public class ReqComment {
+    @NotBlank
     private String comment;
 
     private Integer userId;
-
+    @NotNull
     private Integer projectId;
 
     public ReqComment() {

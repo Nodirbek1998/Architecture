@@ -1,11 +1,14 @@
 package uz.cas.controllersestem.payload;
 
-public class ReqProgress {
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+public class ReqProgress {
+    @NotNull
     private float percent;
 
     private Integer userId;
-
+    @NotNull
     private Integer projectId;
 
     public ReqProgress() {

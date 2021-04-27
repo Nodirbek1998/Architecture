@@ -1,15 +1,15 @@
 package uz.cas.controllersestem.service;
 
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.cas.controllersestem.entity.Project;
 import uz.cas.controllersestem.entity.Users;
 import uz.cas.controllersestem.entity.enums.ProjectStatus;
+import uz.cas.controllersestem.payload.ReqComment;
 import uz.cas.controllersestem.payload.ReqLogin;
 import uz.cas.controllersestem.payload.ReqProject;
-import uz.cas.controllersestem.repository.DocumentRepository;
+import uz.cas.controllersestem.payload.ReqUsername;
 import uz.cas.controllersestem.repository.ProjectRepository;
 import uz.cas.controllersestem.repository.UsersRepository;
 
@@ -22,8 +22,6 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     @Autowired
     private UsersRepository usersRepository;
-    @Autowired
-    private DocumentRepository documentRepository;
 
 
     public ResponseEntity<?> addProject(ReqProject reqProject){
@@ -70,7 +68,7 @@ public class ProjectService {
         return ResponseEntity.ok( projectRepository.findAll());
     }
 
-    public ResponseEntity<?> getUsernameProject(ReqLogin username){
+    public ResponseEntity<?> getUsernameProject(ReqUsername username){
         Optional<Users> byUsername = usersRepository.findByUsername(username.getUsername());
         if (byUsername.isPresent()){
             Users users = byUsername.get();
@@ -101,5 +99,25 @@ public class ProjectService {
         }
 
         return ResponseEntity.ok("malumot topilmadi");
+    }
+
+    public ResponseEntity<?> addDocument(ReqComment reqComment, Integer id){
+        Optional<Project> byId = projectRepository.findById(id);
+        if (byId.isPresent()) {
+            Project project = byId.get();
+            project.setDocument(reqComment.getComment());
+            projectRepository.save(project);
+            return ResponseEntity.ok("Hujjatlar saqlandi");
+        }
+        return ResponseEntity.ok("Kechirasiz bunday project topilmadi");
+    }
+    public ResponseEntity<?> activeProject(Integer id){
+        Optional<Project> byId = projectRepository.findById(id);
+        if (byId.isPresent()){
+            Project project = byId.get();
+            project.setProjectMake(true);
+            projectRepository.save(project);
+        }
+        return ResponseEntity.ok("Bunday project yo'q");
     }
 }

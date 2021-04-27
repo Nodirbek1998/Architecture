@@ -1,9 +1,12 @@
 package uz.cas.controllersestem.payload;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class ReqLogin {
-
+    @NotBlank
     private String username;
-
+    @NotBlank
     private String password;
 
     public ReqLogin() {

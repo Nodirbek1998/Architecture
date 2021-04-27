@@ -5,9 +5,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import uz.cas.controllersestem.payload.ReqComment;
 import uz.cas.controllersestem.payload.ReqLogin;
 import uz.cas.controllersestem.payload.ReqProject;
+import uz.cas.controllersestem.payload.ReqUsername;
 import uz.cas.controllersestem.service.ProjectService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/uz/cas/project")
@@ -18,14 +22,13 @@ public class ProjectController {
     private ProjectService projectService;
 
     @PostMapping
-    public HttpEntity<?> addProject(@RequestBody ReqProject reqProject){
-        System.out.println(reqProject.getProjectCreated()+reqProject.getProjectName()+reqProject.getUsersList()+reqProject.getProjectManager());
+    public HttpEntity<?> addProject(@Valid  @RequestBody ReqProject reqProject){
         projectService.addProject(reqProject);
         return ResponseEntity.ok(true);
     }
 
     @PutMapping("/{id}")
-    public HttpEntity<?> editProject(@PathVariable Integer id, @RequestBody ReqProject reqProject){
+    public HttpEntity<?> editProject(@PathVariable Integer id, @Valid @RequestBody ReqProject reqProject){
         return ResponseEntity.ok(projectService.editProject(id, reqProject));
     }
 
@@ -43,7 +46,17 @@ public class ProjectController {
     }
 
     @PostMapping("/user")
-    public HttpEntity<?> getProjectUser(@RequestBody ReqLogin username){
+    public HttpEntity<?> getProjectUser(@RequestBody ReqUsername username){
         return ResponseEntity.ok(projectService.getUsernameProject(username));
+    }
+    @PostMapping("/{id}")
+    public HttpEntity<?> addDocument(@PathVariable Integer id, @Valid  @RequestBody ReqComment reqComment){
+        ResponseEntity<?> responseEntity = projectService.addDocument(reqComment, id);
+        return ResponseEntity.ok(responseEntity);
+    }
+    @GetMapping("/active/{id}")
+    public HttpEntity<?> projectActive(@PathVariable Integer id){
+        ResponseEntity<?> responseEntity = projectService.activeProject(id);
+        return ResponseEntity.ok(responseEntity);
     }
 }

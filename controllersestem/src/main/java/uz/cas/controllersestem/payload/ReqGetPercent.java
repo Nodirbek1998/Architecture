@@ -1,10 +1,13 @@
 package uz.cas.controllersestem.payload;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class ReqGetPercent {
-
+    @NotBlank
     private String userId;
+    @NotNull
     private Integer projectId;
 
     public ReqGetPercent() {

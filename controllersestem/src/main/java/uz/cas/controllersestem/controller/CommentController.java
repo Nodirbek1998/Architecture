@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uz.cas.controllersestem.payload.ReqComment;
 import uz.cas.controllersestem.service.CommentService;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/uz/cas/comment")
 public class CommentController {
@@ -17,7 +19,7 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping
-    public HttpEntity<?> addComment(@RequestBody ReqComment reqComment){
+    public HttpEntity<?> addComment(@Valid  @RequestBody ReqComment reqComment){
         return ResponseEntity.ok(commentService.addComment(reqComment));
     }
 }

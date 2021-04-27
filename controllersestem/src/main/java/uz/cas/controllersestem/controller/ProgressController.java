@@ -10,6 +10,7 @@ import uz.cas.controllersestem.payload.ReqProgress;
 import uz.cas.controllersestem.repository.ProgressRepository;
 import uz.cas.controllersestem.service.ProgressService;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @Controller
@@ -21,12 +22,12 @@ public class ProgressController {
     @Autowired
     private ProgressRepository progressRepository;
     @PostMapping
-    public HttpEntity<?> addProgress(@RequestBody ReqProgress reqProgress){
+    public HttpEntity<?> addProgress(@Valid  @RequestBody ReqProgress reqProgress){
         return ResponseEntity.ok(progressService.addProgress(reqProgress));
     }
 
     @PostMapping("/{id}")
-    public HttpEntity<?> editProgress(@PathVariable UUID id, @RequestBody ReqProgress reqProgress){
+    public HttpEntity<?> editProgress(@PathVariable UUID id, @Valid  @RequestBody ReqProgress reqProgress){
         return ResponseEntity.ok(progressService.editProgress(id, reqProgress));
     }
 
@@ -39,7 +40,7 @@ public class ProgressController {
         return ResponseEntity.ok(progressService.getPercentGIP(reqGetPercent));
     }
     @PostMapping("/disabledProgress")
-    public HttpEntity<?> disabledProgress(@RequestBody ReqGetPercent reqGetPercent){
+    public HttpEntity<?> disabledProgress(@Valid @RequestBody ReqGetPercent reqGetPercent){
         return ResponseEntity.ok(progressService.getPercentGIP(reqGetPercent));
     }
 

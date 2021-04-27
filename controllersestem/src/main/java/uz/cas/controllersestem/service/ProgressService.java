@@ -115,6 +115,8 @@ public class ProgressService {
         editProject.put("projectManager", project.getProjectManager());
         editProject.put("projectPercent", project.getProjectPercent());
         editProject.put("projectStatus", project.getProjectStatus());
+        editProject.put("projectMake", project.isProjectMake());
+        editProject.put("document", project.getDocument());
         List<Map<String, Object>> usersList = new ArrayList<>();
         for (Users users : project.getUsersList()) {
             Map<String, Object> user = new HashMap<>();

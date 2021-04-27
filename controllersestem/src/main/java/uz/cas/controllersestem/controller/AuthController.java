@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uz.cas.controllersestem.payload.ReqLogin;
 import uz.cas.controllersestem.service.UsersService;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/uz/cas")
 @CrossOrigin("*")
@@ -21,7 +23,7 @@ public class AuthController {
     private UsersService usersService;
 
     @PostMapping("/login")
-    public HttpEntity<?> login(@RequestBody ReqLogin reqLogin){
+    public HttpEntity<?> login(@Valid  @RequestBody ReqLogin reqLogin){
         ResponseEntity<?> login = usersService.login(reqLogin);
         return ResponseEntity.ok(login);
     }
