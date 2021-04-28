@@ -59,4 +59,16 @@ public class ProjectController {
         ResponseEntity<?> responseEntity = projectService.activeProject(id);
         return ResponseEntity.ok(responseEntity);
     }
+    @GetMapping("/active")
+    public HttpEntity<?> activeProject(){
+        return ResponseEntity.ok(projectService.activeProject());
+    }
+    @GetMapping("/inProgress")
+    public HttpEntity<?> inProgressProject(){
+        return ResponseEntity.ok(projectService.inProgressProject());
+    }
+    @GetMapping("/finished")
+    public HttpEntity<?> finishedProject(){
+        return ResponseEntity.ok(projectService.finishedProject());
+    }
 }

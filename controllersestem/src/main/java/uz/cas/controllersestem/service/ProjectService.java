@@ -120,4 +120,18 @@ public class ProjectService {
         }
         return ResponseEntity.ok("Bunday project yo'q");
     }
+
+    public ResponseEntity<?> activeProject(){
+        List<Project> byProjectStatus = projectRepository.findByProjectStatus(ProjectStatus.active);
+        return ResponseEntity.ok(byProjectStatus);
+    }
+    public ResponseEntity<?> inProgressProject(){
+        List<Project> byProjectStatus = projectRepository.findByProjectStatus(ProjectStatus.inProgress);
+        return ResponseEntity.ok(byProjectStatus);
+    }
+    public ResponseEntity<?> finishedProject(){
+        List<Project> byProjectStatus = projectRepository.findByProjectStatus(ProjectStatus.finished);
+        return ResponseEntity.ok(byProjectStatus);
+    }
 }
+
