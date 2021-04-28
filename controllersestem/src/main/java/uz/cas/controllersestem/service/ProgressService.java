@@ -63,46 +63,9 @@ public class ProgressService {
         Optional<Project> optionalProject = projectRepository.findById(progress.getProject().getId());
         Project project = optionalProject.get();
         int count = project.getUsersList().size();
-        System.out.println(count + "////////////////////////////////////////");
         project.setProjectPercent(allPercent/count);
         projectRepository.save(project);
         return ResponseEntity.status(200).body("qo'shildi");
-    }
-
-    public ResponseEntity<?> getPercent(ReqGetPercent reqGetPercent){
-        Project project  = projectRepository.findById(reqGetPercent.getProjectId()).get();
-        Map<String, Object> editProject = new HashMap<>();
-        editProject.put("id", project.getId());
-        editProject.put("projectName",project.getProjectName());
-        editProject.put("projectCreated", project.getProjectCreated());
-        editProject.put("projectFinished", project.getProjectFinished());
-        editProject.put("projectManager", project.getProjectManager());
-        editProject.put("projectPercent", project.getProjectPercent());
-        editProject.put("projectStatus", project.getProjectStatus());
-        List<Map<String, Object>> usersList = new ArrayList<>();
-        for (Users users : project.getUsersList()) {
-            Map<String, Object> user = new HashMap<>();
-            user.put("id", users.getId());
-            user.put("name", ""+users.getFirstName()+"  " + users.getLastName());
-            user.put("username", users.getUsername());
-            Optional<Comment> byStatusAndProjectAndUsers = commentRepository.findByStatusAndProjectAndUsers(true, project, users);
-            if (byStatusAndProjectAndUsers.isPresent()){
-                user.put("comment", byStatusAndProjectAndUsers.get().getComment());
-            }
-
-            List<Progress> progresses = progressRepository.findByStatusAndProjectAndUsers(
-                    true,
-                    project,
-                    users);
-            float percent = 0;
-            for (Progress progress : progresses) {
-                percent += progress.getPercent();
-            }
-            user.put("userPercent", percent);
-            usersList.add(user);
-        }
-        editProject.put("usersList",usersList);
-        return ResponseEntity.ok(editProject);
     }
 
     public ResponseEntity<?> getPercentGIP(ReqGetPercent reqGetPercent){

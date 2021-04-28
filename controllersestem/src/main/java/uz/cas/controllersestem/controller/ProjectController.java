@@ -28,7 +28,7 @@ public class ProjectController {
     }
 
     @PutMapping("/{id}")
-    public HttpEntity<?> editProject(@PathVariable Integer id, @Valid @RequestBody ReqProject reqProject){
+    public HttpEntity<?> editProject(@PathVariable Integer id, @RequestBody ReqProject reqProject){
         return ResponseEntity.ok(projectService.editProject(id, reqProject));
     }
 
