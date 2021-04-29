@@ -19,8 +19,6 @@ public class ProgressController {
 
     @Autowired
     private ProgressService progressService;
-    @Autowired
-    private ProgressRepository progressRepository;
     @PostMapping
     public HttpEntity<?> addProgress(@Valid  @RequestBody ReqProgress reqProgress){
         return ResponseEntity.ok(progressService.addProgress(reqProgress));
@@ -42,6 +40,11 @@ public class ProgressController {
     @PostMapping("/disabledProgress")
     public HttpEntity<?> disabledProgress(@Valid @RequestBody ReqGetPercent reqGetPercent){
         return ResponseEntity.ok(progressService.getPercentGIP(reqGetPercent));
+    }
+    @DeleteMapping("/{id}")
+    public HttpEntity<?> deleteProgress(@PathVariable UUID id){
+        return ResponseEntity.ok(progressService.deleteProgress(id));
+
     }
 
 }

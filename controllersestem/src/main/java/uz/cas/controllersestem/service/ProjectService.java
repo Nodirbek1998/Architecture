@@ -34,7 +34,7 @@ public class ProjectService {
         project.setProjectCreated(reqProject.getProjectCreated());
         project.setProjectStatus(ProjectStatus.active);
         projectRepository.save(project);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok("Project yaratildi");
     }
 
     public ResponseEntity<?> editProject(Integer id, ReqProject reqProject){

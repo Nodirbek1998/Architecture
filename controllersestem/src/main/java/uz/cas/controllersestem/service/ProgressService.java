@@ -110,4 +110,9 @@ public class ProgressService {
         editProject.put("usersList",usersList);
         return ResponseEntity.ok(editProject);
     }
+
+    public ResponseEntity<?> deleteProgress(UUID uuid){
+        progressRepository.deleteById(uuid);
+        return ResponseEntity.ok("Malumot o'chirildi");
+    }
 }

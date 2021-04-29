@@ -44,6 +44,6 @@ public class CommentService {
         comment.setStatus(true);
         commentRepository.save(comment);
 
-        return ResponseEntity.status(200).body("Saqlandi");
+        return ResponseEntity.status(200).body("Malumot saqlandi");
     }
 }
