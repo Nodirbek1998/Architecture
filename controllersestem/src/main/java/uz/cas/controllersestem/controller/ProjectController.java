@@ -23,8 +23,7 @@ public class ProjectController {
 
     @PostMapping
     public HttpEntity<?> addProject(@Valid  @RequestBody ReqProject reqProject){
-        projectService.addProject(reqProject);
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok(projectService.addProject(reqProject));
     }
 
     @PutMapping("/{id}")

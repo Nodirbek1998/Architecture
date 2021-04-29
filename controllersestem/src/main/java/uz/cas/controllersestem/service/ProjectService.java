@@ -117,6 +117,7 @@ public class ProjectService {
             Project project = byId.get();
             project.setProjectMake(true);
             projectRepository.save(project);
+            return ResponseEntity.ok("Project ishga tushdi");
         }
         return ResponseEntity.ok("Bunday project yo'q");
     }
