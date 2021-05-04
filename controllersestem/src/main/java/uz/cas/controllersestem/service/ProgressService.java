@@ -3,10 +3,9 @@ package uz.cas.controllersestem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.cas.controllersestem.entity.Comment;
-import uz.cas.controllersestem.entity.Progress;
-import uz.cas.controllersestem.entity.Project;
-import uz.cas.controllersestem.entity.Users;
+import uz.cas.controllersestem.entity.*;
+import uz.cas.controllersestem.entity.enums.RoleName;
+import uz.cas.controllersestem.payload.ReqActivePercent;
 import uz.cas.controllersestem.payload.ReqGetPercent;
 import uz.cas.controllersestem.payload.ReqProgress;
 import uz.cas.controllersestem.repository.CommentRepository;
@@ -50,12 +49,19 @@ public class ProgressService {
         return ResponseEntity.status(500).body("Bunaqa malumot topilmadi");
     }
 
-    public ResponseEntity<?> progressActive(UUID id){
+    public ResponseEntity<?> progressActive(UUID id, ReqActivePercent reqActivePercent){
+        List<Progress> byStatus = progressRepository.findByStatusAndProjectAndUsers(true,
+                projectRepository.findById(reqActivePercent.getProjectId()).get(),
+                usersRepository.findById(reqActivePercent.getUserId()).get());
+        for (Progress status : byStatus) {
+            status.setStatus(false);
+            progressRepository.save(status);
+        }
         Optional<Progress> byId = progressRepository.findById(id);
         Progress progress = byId.get();
         progress.setStatus(true);
         progressRepository.save(progress);
-        List<Progress> progressList = progressRepository.findByStatus(true);
+        List<Progress> progressList = progressRepository.findByStatusAndProject(true, projectRepository.findById(reqActivePercent.getProjectId()));
         float allPercent = 0;
         for (int i = 0; i < progressList.size(); i ++){
             allPercent += progressList.get(i).getPercent();
@@ -75,21 +81,25 @@ public class ProgressService {
         editProject.put("projectName",project.getProjectName());
         editProject.put("projectCreated", project.getProjectCreated());
         editProject.put("projectFinished", project.getProjectFinished());
+        List<Comment> byProjectAndUsers = commentRepository.findByProjectAndUsers(project, project.getProjectManager());
+        editProject.put("proRectorComment", byProjectAndUsers);
         editProject.put("projectManager", project.getProjectManager());
         editProject.put("projectPercent", project.getProjectPercent());
         editProject.put("projectStatus", project.getProjectStatus());
         editProject.put("projectMake", project.isProjectMake());
         editProject.put("document", project.getDocument());
+        Optional<Users> byRoles = usersRepository.findById(2);
+        editProject.put("proRector", byRoles.get() );
+        List<Comment> byProjectAndUsers1 = commentRepository.findByProjectAndUsers(project, byRoles.get());
+        editProject.put("proRectorComment", byProjectAndUsers1);
         List<Map<String, Object>> usersList = new ArrayList<>();
         for (Users users : project.getUsersList()) {
             Map<String, Object> user = new HashMap<>();
             user.put("id", users.getId());
             user.put("name", ""+users.getFirstName()+"  " + users.getLastName());
             user.put("username", users.getUsername());
-            Optional<Comment> byStatusAndProjectAndUsers = commentRepository.findByStatusAndProjectAndUsers(true, project, users);
-            if (byStatusAndProjectAndUsers.isPresent()){
-                user.put("comment", byStatusAndProjectAndUsers.get().getComment());
-            }
+            List<Comment> byStatusAndProjectAndUsers = commentRepository.findByProjectAndUsers(project, users);
+                user.put("comment", byStatusAndProjectAndUsers);
             List<Progress> progresses = progressRepository.findByStatusAndProjectAndUsers(
                     true,
                     project,

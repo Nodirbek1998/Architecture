@@ -17,6 +17,7 @@ import uz.cas.controllersestem.entity.enums.RoleName;
 import uz.cas.controllersestem.exception.UsernameException;
 import uz.cas.controllersestem.payload.ReqLogin;
 import uz.cas.controllersestem.payload.ReqUser;
+import uz.cas.controllersestem.repository.ProjectRepository;
 import uz.cas.controllersestem.repository.RoleRepository;
 import uz.cas.controllersestem.repository.UsersRepository;
 import uz.cas.controllersestem.security.JwtFilter;
@@ -34,6 +35,8 @@ public class UsersService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtProvider jwtProvider;
+    @Autowired
+    private ProjectRepository projectRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -102,7 +105,8 @@ public class UsersService implements UserDetailsService {
 
     public ResponseEntity<?> getAll(){
            Users users = loadUserByUsername(jwtProvider.getUsername());
-           if (users.getRoles().stream().findFirst().get().getRoleName() == RoleName.admin){
+           if (users.getRoles().stream().findFirst().get().getRoleName() == RoleName.admin
+           || users.getRoles().stream().findFirst().get().getRoleName() == RoleName.proRector){
                List<Users> all = usersRepository.findAll();
                return ResponseEntity.ok(all);
            }
@@ -110,20 +114,9 @@ public class UsersService implements UserDetailsService {
     }
 
     public ResponseEntity<?> getUser(){
-        Users users = loadUserByUsername(jwtProvider.getUsername());
-        if (users.getRoles().stream().findFirst().get().getRoleName() == RoleName.admin){
-            List<Users> all = usersRepository.findAll();
+        List<Users> gip = usersRepository.findByJob("Gip");
+        return ResponseEntity.ok(gip);
 
-            List<Object> editUser = new ArrayList<>();
-            for (Users users1 : all) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("label", ""+users1.getFirstName()+"  "+users1.getLastName());
-                map.put("value", users1.getId());
-                editUser.add(map);
-            }
-            return ResponseEntity.ok(editUser);
-        }
-        return ResponseEntity.ok("Kechirasiz malumotingiz noto'g'ri");
     }
 
     public ResponseEntity<?> getUser(Integer id){

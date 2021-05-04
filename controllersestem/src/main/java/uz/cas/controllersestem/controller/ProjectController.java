@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uz.cas.controllersestem.payload.ReqComment;
-import uz.cas.controllersestem.payload.ReqLogin;
 import uz.cas.controllersestem.payload.ReqProject;
 import uz.cas.controllersestem.payload.ReqUsername;
 import uz.cas.controllersestem.service.ProjectService;
@@ -47,6 +46,10 @@ public class ProjectController {
     @PostMapping("/user")
     public HttpEntity<?> getProjectUser(@RequestBody ReqUsername username){
         return ResponseEntity.ok(projectService.getUsernameProject(username));
+    }
+    @PostMapping("/user/gip")
+    public HttpEntity<?> getGipProject(@RequestBody ReqUsername username){
+        return ResponseEntity.ok(projectService.getGipProject(username));
     }
     @PostMapping("/{id}")
     public HttpEntity<?> addDocument(@PathVariable Integer id, @Valid  @RequestBody ReqComment reqComment){

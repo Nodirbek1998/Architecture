@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @Component
 public class DataLoader implements CommandLineRunner {
 
-    @Autowired
-    private RoleRepository roleRepository;
+@Autowired
+private RoleRepository roleRepository;
 
     @Autowired
     private UsersRepository usersRepository;
@@ -36,37 +36,67 @@ public class DataLoader implements CommandLineRunner {
             roleRepository.save(new Role(RoleName.admin));
             roleRepository.save(new Role(RoleName.user));
             roleRepository.save(new Role(RoleName.gip));
+            roleRepository.save(new Role(RoleName.gip1));
+            roleRepository.save(new Role(RoleName.proRector));
+            roleRepository.save(new Role(RoleName.gip2));
             roleRepository.save(new Role(RoleName.projectControl));
             HashSet<Role> roles = new HashSet<>(roleRepository.findAll());
 
             usersRepository.save(new Users(
-                    "Nodirbek",
+                    "Farrux",
                     "Mamadaliyev",
-                    "nodir",
+                    "farrux",
                     passwordEncoder.encode("1234"),
                     "1234",
                     "derictor",
                     roles.stream().filter(role -> role.getRoleName().name()
                             .equals("admin")).collect(Collectors.toSet())));
+
             usersRepository.save(new Users(
-                    "Azizbek",
-                    "Mamadoliyev",
-                    "aziz",
+                    "Anvar",
+                    "Baxriddinov",
+                    "anvar",
                     passwordEncoder.encode("1234"),
                     "1234",
-                    "GIP",
+                    "proRector",
                     roles.stream().filter(role -> role.getRoleName().name()
-                            .equals("gip")).collect(Collectors.toSet())));
+                            .equals("proRector")).collect(Collectors.toSet())));
             usersRepository.save(new Users(
-                    "Aziza",
-                    "Karimova",
-                    "aziza",
+                    "Kamola",
+                    "Tursunova",
+                    "kamola",
                     passwordEncoder.encode("1234"),
                     "1234",
                     "Kotiba",
                     roles.stream().filter(role -> role.getRoleName().name()
                             .equals("projectControl")).collect(Collectors.toSet())));
-
+            usersRepository.save(new Users(
+                    "Hasan",
+                    "Ochilov",
+                    "hasan",
+                    passwordEncoder.encode("1234"),
+                    "1234",
+                    "Gip",
+                    roles.stream().filter(role -> role.getRoleName().name()
+                            .equals("gip")).collect(Collectors.toSet())));
+            usersRepository.save(new Users(
+                    "Muslimjon",
+                    "Samatov",
+                    "muslim",
+                    passwordEncoder.encode("1234"),
+                    "1234",
+                    "Gip",
+                    roles.stream().filter(role -> role.getRoleName().name()
+                            .equals("gip1")).collect(Collectors.toSet())));
+            usersRepository.save(new Users(
+                    "Amirshox",
+                    "Axmedov",
+                    "amirshox",
+                    passwordEncoder.encode("1234"),
+                    "1234",
+                    "Gip",
+                    roles.stream().filter(role -> role.getRoleName().name()
+                            .equals("gip2")).collect(Collectors.toSet())));
         }
     }
 }

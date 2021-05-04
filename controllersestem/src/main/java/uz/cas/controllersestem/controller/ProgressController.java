@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import uz.cas.controllersestem.payload.ReqActivePercent;
 import uz.cas.controllersestem.payload.ReqGetPercent;
 import uz.cas.controllersestem.payload.ReqProgress;
 import uz.cas.controllersestem.repository.ProgressRepository;
@@ -29,9 +30,9 @@ public class ProgressController {
         return ResponseEntity.ok(progressService.editProgress(id, reqProgress));
     }
 
-    @GetMapping("/add/{id}")
-    public HttpEntity<?> pushProgress(@PathVariable UUID id){
-        return ResponseEntity.ok(progressService.progressActive(id));
+    @PostMapping("/add/{id}")
+    public HttpEntity<?> pushProgress(@PathVariable UUID id, @RequestBody ReqActivePercent reqActivePercent){
+        return ResponseEntity.ok(progressService.progressActive(id, reqActivePercent));
     }
     @PostMapping("/getPercent")
     public HttpEntity<?> getPercent(@RequestBody ReqGetPercent reqGetPercent){

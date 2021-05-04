@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 
 
 @Entity
-public class Comment extends AbsEntity {
+public class Comment extends AbsEntity{
 
     @ManyToOne
     private Users users;

@@ -4,27 +4,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.cas.controllersestem.entity.Project;
+import uz.cas.controllersestem.entity.Role;
 import uz.cas.controllersestem.entity.Users;
 import uz.cas.controllersestem.entity.enums.ProjectStatus;
+import uz.cas.controllersestem.entity.enums.RoleName;
 import uz.cas.controllersestem.payload.ReqComment;
 import uz.cas.controllersestem.payload.ReqLogin;
 import uz.cas.controllersestem.payload.ReqProject;
 import uz.cas.controllersestem.payload.ReqUsername;
+import uz.cas.controllersestem.repository.CommentRepository;
 import uz.cas.controllersestem.repository.ProjectRepository;
+import uz.cas.controllersestem.repository.RoleRepository;
 import uz.cas.controllersestem.repository.UsersRepository;
 
+import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
     private UsersRepository usersRepository;
-
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     public ResponseEntity<?> addProject(ReqProject reqProject){
+        HashSet<Role> roles = new HashSet<>(roleRepository.findAll());
         Project project = new Project();
         project.setProjectManager(usersRepository.findById(reqProject.getProjectManager()).get());
         project.setProjectName(reqProject.getProjectName());
@@ -53,6 +64,7 @@ public class ProjectService {
     }
 
     public ResponseEntity<?> deleteProject(Integer id){
+         commentRepository.deleteComment(id);
         projectRepository.deleteById(id);
         return ResponseEntity.status(200).body("malumot o'chirildi");
     }
@@ -69,35 +81,31 @@ public class ProjectService {
     }
 
     public ResponseEntity<?> getUsernameProject(ReqUsername username){
-        Optional<Users> byUsername = usersRepository.findByUsername(username.getUsername());
-        if (byUsername.isPresent()){
-            Users users = byUsername.get();
-            if (users.getUsername().equals("aziz")){
-                List<Project> byProjectStatus = projectRepository.findByProjectStatusOrProjectStatus(ProjectStatus.active, ProjectStatus.inProgress);
-                if (byProjectStatus.size() > 0){
-                    return ResponseEntity.ok(byProjectStatus);
-                }
-                return ResponseEntity.ok("malumot topilmadi");
-            }else {
-                List<Project> byProjectStatus = projectRepository.findByProjectStatus(ProjectStatus.active);
-                if (byProjectStatus.size() > 0){
-                    List<Project> userProject = new ArrayList<>();
-                    for (Project project : byProjectStatus) {
-                        if (project.getProjectManager().getUsername() == username.getUsername()){
-                            userProject.add(project);
-                        }else {
-                            for (Users user : project.getUsersList()) {
-                                if (user.getUsername().equals(username.getUsername())){
-                                    userProject.add(project);
-                                }
-                            }
-                        }
+        List<Project> byProjectStatus = projectRepository.findByProjectStatus(ProjectStatus.active);
+        if (byProjectStatus.size() > 0){
+            List<Project> userProject = new ArrayList<>();
+            for (Project project : byProjectStatus) {
+                for (Users user : project.getUsersList()) {
+                    if (user.getUsername().equals(username.getUsername())){
+                        userProject.add(project);
                     }
-                    return ResponseEntity.ok(userProject);
                 }
             }
+            return ResponseEntity.ok(userProject);
         }
-
+        return ResponseEntity.ok("malumot topilmadi");
+    }
+    public ResponseEntity<?> getGipProject(ReqUsername username){
+        List<Project> byProjectStatus = projectRepository.findByProjectStatus(ProjectStatus.active);
+        if (byProjectStatus.size() > 0){
+            List<Project> userProject = new ArrayList<>();
+            for (Project project : byProjectStatus) {
+                if (project.getProjectManager().getUsername().equals(username.getUsername())){
+                    userProject.add(project);
+                }
+            }
+            return ResponseEntity.ok(userProject);
+        }
         return ResponseEntity.ok("malumot topilmadi");
     }
 

@@ -1,25 +1,15 @@
 package uz.cas.controllersestem.payload;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.UUID;
+
 
 public class ReqGetPercent {
-    @NotBlank
-    private String userId;
     @NotNull
     private Integer projectId;
 
     public ReqGetPercent() {
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public Integer getProjectId() {
         return projectId;
@@ -29,8 +19,7 @@ public class ReqGetPercent {
         this.projectId = projectId;
     }
 
-    public ReqGetPercent(String userId, Integer projectId) {
-        this.userId = userId;
+    public ReqGetPercent(Integer projectId) {
         this.projectId = projectId;
     }
 }
