@@ -24,7 +24,7 @@ public class ControllersestemApplication {
     @Autowired
     private ProjectRepository projectRepository;
 
-    @Scheduled(cron = "0 1 1 * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void timeFinished() {
         List<Project> byProjectStatus = projectRepository.findByProjectStatus(ProjectStatus.active);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd");

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.cas.controllersestem.entity.*;
+import uz.cas.controllersestem.entity.enums.ProgressStatus;
+import uz.cas.controllersestem.entity.enums.ProjectStatus;
 import uz.cas.controllersestem.entity.enums.RoleName;
 import uz.cas.controllersestem.payload.ReqActivePercent;
 import uz.cas.controllersestem.payload.ReqGetPercent;
@@ -32,6 +34,7 @@ public class ProgressService {
         progress.setPercent(reqProgress.getPercent());
         progress.setProject(projectRepository.findById(reqProgress.getProjectId()).get());
         progress.setUsers(usersRepository.findById(reqProgress.getUserId()).get());
+        progress.setStatus(ProgressStatus.start);
         progressRepository.save(progress);
         return ResponseEntity.status(200).body("Malumot saqlandi");
     }
@@ -50,18 +53,19 @@ public class ProgressService {
     }
 
     public ResponseEntity<?> progressActive(UUID id, ReqActivePercent reqActivePercent){
-        List<Progress> byStatus = progressRepository.findByStatusAndProjectAndUsers(true,
+        List<Progress> byStatus = progressRepository.findByStatusAndProjectAndUsers(ProgressStatus.active,
                 projectRepository.findById(reqActivePercent.getProjectId()).get(),
                 usersRepository.findById(reqActivePercent.getUserId()).get());
         for (Progress status : byStatus) {
-            status.setStatus(false);
+            status.setStatus(ProgressStatus.finish);
             progressRepository.save(status);
         }
         Optional<Progress> byId = progressRepository.findById(id);
         Progress progress = byId.get();
-        progress.setStatus(true);
+        progress.setStatus(ProgressStatus.active);
         progressRepository.save(progress);
-        List<Progress> progressList = progressRepository.findByStatusAndProject(true, projectRepository.findById(reqActivePercent.getProjectId()));
+        List<Progress> progressList = progressRepository.findByStatusAndProject(ProgressStatus.active,
+                projectRepository.findById(reqActivePercent.getProjectId()).get());
         float allPercent = 0;
         for (int i = 0; i < progressList.size(); i ++){
             allPercent += progressList.get(i).getPercent();
@@ -69,6 +73,9 @@ public class ProgressService {
         Optional<Project> optionalProject = projectRepository.findById(progress.getProject().getId());
         Project project = optionalProject.get();
         int count = project.getUsersList().size();
+        if (allPercent/count == 100){
+            project.setProjectStatus(ProjectStatus.inProgress);
+        }
         project.setProjectPercent(allPercent/count);
         projectRepository.save(project);
         return ResponseEntity.status(200).body("qo'shildi");
@@ -101,7 +108,7 @@ public class ProgressService {
             List<Comment> byStatusAndProjectAndUsers = commentRepository.findByProjectAndUsers(project, users);
                 user.put("comment", byStatusAndProjectAndUsers);
             List<Progress> progresses = progressRepository.findByStatusAndProjectAndUsers(
-                    true,
+                    ProgressStatus.active,
                     project,
                     users);
             float percent = 0;
@@ -111,7 +118,7 @@ public class ProgressService {
             user.put("userPercent", percent);
 
             List<Progress> progressesDisabled = progressRepository.findByStatusAndProjectAndUsers(
-                    false,
+                    ProgressStatus.start,
                     project,
                     users);
             user.put("progresses",progressesDisabled);
