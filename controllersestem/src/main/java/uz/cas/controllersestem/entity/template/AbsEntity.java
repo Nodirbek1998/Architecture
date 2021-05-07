@@ -1,5 +1,6 @@
 package uz.cas.controllersestem.entity.template;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
@@ -24,17 +25,19 @@ public abstract class AbsEntity {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     @CreationTimestamp
     @Column(updatable = false, nullable = false)
     private Timestamp createdAt;
 
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     @UpdateTimestamp
     private Timestamp updatedAt;
-
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     @CreatedBy
     @Column(updatable = false)
     private UUID createdBy;
-
+    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     @LastModifiedBy
     private UUID updatedBy;
 
