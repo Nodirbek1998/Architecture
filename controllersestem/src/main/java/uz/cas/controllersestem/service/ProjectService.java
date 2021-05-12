@@ -7,11 +7,9 @@ import uz.cas.controllersestem.entity.Project;
 import uz.cas.controllersestem.entity.Role;
 import uz.cas.controllersestem.entity.Users;
 import uz.cas.controllersestem.entity.enums.ProjectStatus;
-import uz.cas.controllersestem.entity.enums.RoleName;
-import uz.cas.controllersestem.payload.ReqComment;
-import uz.cas.controllersestem.payload.ReqLogin;
-import uz.cas.controllersestem.payload.ReqProject;
-import uz.cas.controllersestem.payload.ReqUsername;
+import uz.cas.controllersestem.payload.request.ReqComment;
+import uz.cas.controllersestem.payload.request.ReqProject;
+import uz.cas.controllersestem.payload.request.ReqUsername;
 import uz.cas.controllersestem.repository.CommentRepository;
 import uz.cas.controllersestem.repository.ProjectRepository;
 import uz.cas.controllersestem.repository.RoleRepository;
@@ -19,7 +17,6 @@ import uz.cas.controllersestem.repository.UsersRepository;
 
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional

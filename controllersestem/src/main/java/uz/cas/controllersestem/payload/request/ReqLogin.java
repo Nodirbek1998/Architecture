@@ -1,4 +1,4 @@
-package uz.cas.controllersestem.payload;
+package uz.cas.controllersestem.payload.request;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

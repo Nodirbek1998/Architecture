@@ -7,11 +7,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 @MappedSuperclass
@@ -25,18 +27,20 @@ public abstract class AbsEntity {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss",locale = "Asia/Tashkent")
     @CreationTimestamp
     @Column(updatable = false, nullable = false)
-    private Timestamp createdAt;
+    private Date createdAt;
 
-    @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd HH:mm:ss",locale = "Asia/Tashkent")
     @UpdateTimestamp
-    private Timestamp updatedAt;
+    private Date updatedAt;
+
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     @CreatedBy
     @Column(updatable = false)
     private UUID createdBy;
+
     @JsonFormat(pattern = "yyyy.MM.dd HH:mm:ss")
     @LastModifiedBy
     private UUID updatedBy;

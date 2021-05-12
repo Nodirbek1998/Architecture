@@ -15,12 +15,11 @@ import uz.cas.controllersestem.entity.Role;
 import uz.cas.controllersestem.entity.Users;
 import uz.cas.controllersestem.entity.enums.RoleName;
 import uz.cas.controllersestem.exception.UsernameException;
-import uz.cas.controllersestem.payload.ReqLogin;
-import uz.cas.controllersestem.payload.ReqUser;
+import uz.cas.controllersestem.payload.request.ReqLogin;
+import uz.cas.controllersestem.payload.request.ReqUser;
 import uz.cas.controllersestem.repository.ProjectRepository;
 import uz.cas.controllersestem.repository.RoleRepository;
 import uz.cas.controllersestem.repository.UsersRepository;
-import uz.cas.controllersestem.security.JwtFilter;
 import uz.cas.controllersestem.security.JwtProvider;
 
 import java.util.*;

@@ -8,17 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import uz.cas.controllersestem.payload.ReqComment;
-import uz.cas.controllersestem.payload.ReqGetPercent;
+import uz.cas.controllersestem.payload.request.ReqComment;
+import uz.cas.controllersestem.payload.request.ReqGetPercent;
+import uz.cas.controllersestem.repository.CommentRepository;
 import uz.cas.controllersestem.service.CommentService;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/uz/cas/comment")
 public class CommentController {
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private CommentRepository commentRepository;
 
     @PostMapping
     public HttpEntity<?> addComment(@Valid  @RequestBody ReqComment reqComment){
@@ -28,6 +32,12 @@ public class CommentController {
     public HttpEntity<?> getCommentProRector(@RequestBody ReqGetPercent reqGetPercent){
         ResponseEntity<?> proRectorComment = commentService.getProRectorComment(reqGetPercent);
         return ResponseEntity.ok(proRectorComment);
+    }
+
+    @GetMapping
+    public HttpEntity<?> getAll(){
+        System.out.println(commentRepository.findAll());
+        return ResponseEntity.ok("'vaqt" + commentRepository.findById(UUID.fromString("8d237cf8-c192-48fd-ba78-81c07f894209")).get().getCreatedAt());
     }
 
 }

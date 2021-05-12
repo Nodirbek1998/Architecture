@@ -5,9 +5,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uz.cas.controllersestem.payload.ReqComment;
-import uz.cas.controllersestem.payload.ReqProject;
-import uz.cas.controllersestem.payload.ReqUsername;
+import uz.cas.controllersestem.payload.request.ReqComment;
+import uz.cas.controllersestem.payload.request.ReqProject;
+import uz.cas.controllersestem.payload.request.ReqUsername;
 import uz.cas.controllersestem.service.ProjectService;
 
 import javax.validation.Valid;

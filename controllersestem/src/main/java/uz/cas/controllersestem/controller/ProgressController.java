@@ -5,10 +5,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uz.cas.controllersestem.payload.ReqActivePercent;
-import uz.cas.controllersestem.payload.ReqGetPercent;
-import uz.cas.controllersestem.payload.ReqProgress;
-import uz.cas.controllersestem.repository.ProgressRepository;
+import uz.cas.controllersestem.payload.request.ReqActivePercent;
+import uz.cas.controllersestem.payload.request.ReqGetPercent;
+import uz.cas.controllersestem.payload.request.ReqProgress;
 import uz.cas.controllersestem.service.ProgressService;
 
 import javax.validation.Valid;

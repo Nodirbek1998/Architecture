@@ -5,7 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uz.cas.controllersestem.payload.ReqUser;
+import uz.cas.controllersestem.payload.request.ReqUser;
 import uz.cas.controllersestem.service.UsersService;
 
 import javax.validation.Valid;

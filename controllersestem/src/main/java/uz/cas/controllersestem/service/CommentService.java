@@ -5,17 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.cas.controllersestem.entity.Comment;
 import uz.cas.controllersestem.entity.Users;
-import uz.cas.controllersestem.payload.ReqComment;
-import uz.cas.controllersestem.payload.ReqGetPercent;
+import uz.cas.controllersestem.payload.request.ReqComment;
+import uz.cas.controllersestem.payload.request.ReqGetPercent;
 import uz.cas.controllersestem.repository.CommentRepository;
 import uz.cas.controllersestem.repository.ProjectRepository;
 import uz.cas.controllersestem.repository.UsersRepository;
-import uz.cas.controllersestem.security.JwtFilter;
 import uz.cas.controllersestem.security.JwtProvider;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -29,13 +26,13 @@ public class CommentService {
     @Autowired
     private JwtProvider jwtProvider;
     @Autowired
-    private UsersService usersService;
+        private UsersService usersService;
 
-    public ResponseEntity<?> addComment(ReqComment reqComment){
-        Users users = usersService.loadUserByUsername(jwtProvider.getUsername());
-        Comment comment = new Comment();
-        comment.setComment(reqComment.getComment());
-        comment.setProject(projectRepository.findById(reqComment.getProjectId()).get());
+        public ResponseEntity<?> addComment(ReqComment reqComment){
+            Users users = usersService.loadUserByUsername(jwtProvider.getUsername());
+            Comment comment = new Comment();
+            comment.setComment(reqComment.getComment());
+            comment.setProject(projectRepository.findById(reqComment.getProjectId()).get());
         comment.setUsers(users);
         comment.setStatus(true);
         commentRepository.save(comment);

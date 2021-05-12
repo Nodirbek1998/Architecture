@@ -6,10 +6,9 @@ import org.springframework.stereotype.Service;
 import uz.cas.controllersestem.entity.*;
 import uz.cas.controllersestem.entity.enums.ProgressStatus;
 import uz.cas.controllersestem.entity.enums.ProjectStatus;
-import uz.cas.controllersestem.entity.enums.RoleName;
-import uz.cas.controllersestem.payload.ReqActivePercent;
-import uz.cas.controllersestem.payload.ReqGetPercent;
-import uz.cas.controllersestem.payload.ReqProgress;
+import uz.cas.controllersestem.payload.request.ReqActivePercent;
+import uz.cas.controllersestem.payload.request.ReqGetPercent;
+import uz.cas.controllersestem.payload.request.ReqProgress;
 import uz.cas.controllersestem.repository.CommentRepository;
 import uz.cas.controllersestem.repository.ProgressRepository;
 import uz.cas.controllersestem.repository.ProjectRepository;
@@ -103,14 +102,23 @@ public class ProgressService {
         for (Users users : project.getUsersList()) {
             Map<String, Object> user = new HashMap<>();
             user.put("id", users.getId());
-            user.put("name", ""+users.getFirstName()+"  " + users.getLastName());
+            user.put("name", ""+users.getFirstName()+ "  " + users.getLastName());
             user.put("username", users.getUsername());
             List<Comment> byStatusAndProjectAndUsers = commentRepository.findByProjectAndUsers(project, users);
-                user.put("comment", byStatusAndProjectAndUsers);
+            Map<String, String> comment = new HashMap<>();
+            List<Map<String, String>> comments = new ArrayList<>();
+            for (Comment byStatusAndProjectAndUser : byStatusAndProjectAndUsers) {
+
+                comment.put("comment", byStatusAndProjectAndUser.getComment());
+                comment.put("createdAt", byStatusAndProjectAndUser.getCreatedAt().toString());
+                comments.add(comment);
+            }
+                user.put("comment", comments);
             List<Progress> progresses = progressRepository.findByStatusAndProjectAndUsers(
                     ProgressStatus.active,
                     project,
                     users);
+            System.out.println(byStatusAndProjectAndUsers);
             float percent = 0;
             for (Progress progress : progresses) {
                 percent += progress.getPercent();

@@ -1,4 +1,4 @@
-package uz.cas.controllersestem.payload;
+package uz.cas.controllersestem.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
