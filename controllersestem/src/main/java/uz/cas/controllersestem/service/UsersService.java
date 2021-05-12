@@ -78,7 +78,7 @@ public class UsersService implements UserDetailsService {
             users.setRoles(roles.stream().filter(role -> role.getRoleName().name()
                     .equals("user")).collect(Collectors.toSet()));
             usersRepository.save(users);
-            return ResponseEntity.ok(reqUser.getFirstName() + "qo'shildi");
+            return ResponseEntity.ok(reqUser.getFirstName() + " qo'shildi");
         }
         return ResponseEntity.status(400).body("Bunday username oldin ishlatilgan");
     }
