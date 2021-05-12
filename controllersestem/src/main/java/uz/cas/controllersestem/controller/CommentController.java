@@ -34,10 +34,6 @@ public class CommentController {
         return ResponseEntity.ok(proRectorComment);
     }
 
-    @GetMapping
-    public HttpEntity<?> getAll(){
-        System.out.println(commentRepository.findAll());
-        return ResponseEntity.ok("'vaqt" + commentRepository.findById(UUID.fromString("8d237cf8-c192-48fd-ba78-81c07f894209")).get().getCreatedAt());
-    }
+
 
 }
