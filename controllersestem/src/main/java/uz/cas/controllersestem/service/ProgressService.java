@@ -118,7 +118,6 @@ public class ProgressService {
                     ProgressStatus.active,
                     project,
                     users);
-            System.out.println(byStatusAndProjectAndUsers);
             float percent = 0;
             for (Progress progress : progresses) {
                 percent += progress.getPercent();

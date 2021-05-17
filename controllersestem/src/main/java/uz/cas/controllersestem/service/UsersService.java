@@ -11,15 +11,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uz.cas.controllersestem.entity.Project;
 import uz.cas.controllersestem.entity.Role;
 import uz.cas.controllersestem.entity.Users;
 import uz.cas.controllersestem.entity.enums.RoleName;
 import uz.cas.controllersestem.exception.UsernameException;
 import uz.cas.controllersestem.payload.request.ReqLogin;
 import uz.cas.controllersestem.payload.request.ReqUser;
-import uz.cas.controllersestem.repository.ProjectRepository;
-import uz.cas.controllersestem.repository.RoleRepository;
-import uz.cas.controllersestem.repository.UsersRepository;
+import uz.cas.controllersestem.repository.*;
 import uz.cas.controllersestem.security.JwtProvider;
 
 import java.util.*;
@@ -35,11 +34,13 @@ public class UsersService implements UserDetailsService {
     @Autowired
     private JwtProvider jwtProvider;
     @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private ProgressRepository progressRepository;
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Override
     public Users loadUserByUsername(String username) throws UsernameNotFoundException {
