@@ -3,6 +3,7 @@ package uz.cas.controllersestem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import uz.cas.controllersestem.entity.Progress;
 import uz.cas.controllersestem.entity.Project;
 import uz.cas.controllersestem.entity.Role;
 import uz.cas.controllersestem.entity.Users;
@@ -10,10 +11,7 @@ import uz.cas.controllersestem.entity.enums.ProjectStatus;
 import uz.cas.controllersestem.payload.request.ReqComment;
 import uz.cas.controllersestem.payload.request.ReqProject;
 import uz.cas.controllersestem.payload.request.ReqUsername;
-import uz.cas.controllersestem.repository.CommentRepository;
-import uz.cas.controllersestem.repository.ProjectRepository;
-import uz.cas.controllersestem.repository.RoleRepository;
-import uz.cas.controllersestem.repository.UsersRepository;
+import uz.cas.controllersestem.repository.*;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -30,6 +28,8 @@ public class ProjectService {
     private CommentRepository commentRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private ProgressRepository progressRepository;
 
     public ResponseEntity<?> addProject(ReqProject reqProject){
         HashSet<Role> roles = new HashSet<>(roleRepository.findAll());
@@ -62,6 +62,7 @@ public class ProjectService {
 
     public ResponseEntity<?> deleteProject(Integer id){
          commentRepository.deleteComment(id);
+         progressRepository.deleteProgress(id);
         projectRepository.deleteById(id);
         return ResponseEntity.status(200).body("malumot o'chirildi");
     }
